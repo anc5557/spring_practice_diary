@@ -1,6 +1,6 @@
-# js -> java 마이그레이션
+# js -> java 마이그레이션(진행중)
 
-[토이프로젝트 : 다이어리](https://github.com/anc5557/Diary)의 Backend 부분을 마이그레이션 함(진행중)
+[토이프로젝트 : 다이어리](https://github.com/anc5557/Diary)의 Backend 부분을 마이그레이션 함
 
 ## 파일 구조
 
