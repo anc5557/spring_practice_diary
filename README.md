@@ -4,6 +4,7 @@
 
 ## 파일 구조
 
+```md
 - src
   - main
     - java/com/example/demo
@@ -27,3 +28,6 @@
             - DemoApplication.java
     - resources
       - application.properties(.gitignore)
+```
+#### config
+
