@@ -9,25 +9,25 @@ src
 └── main
     └── java
         └── com/practice/diary
-            ├── config
-            │   └── SecurityConfig.java
-            ├── constants
-            │   └── SecurityConstants.java
-            ├── controller
-            │   └── AuthController.java
-            ├── domain
-            │   ├── AuthenticationRequest.java
-            │   └── AuthenticationResponse.java 
-            ├── model
-            │   ├── Diary.java
-            │   └── User.java
-            ├── prop
-            │   └── jwtProp.java 
-            ├── repository
-            │   └── UserRepository.java
-            └── service
-                ├── JwtTokenProvider.java        
-                └── UserService.java            
+                        ├── config
+                        │   └── SecurityConfig.java
+                        ├── constants
+                        │   └── SecurityConstants.java
+                        ├── controller
+                        │   └── AuthController.java
+                        ├── domain
+                        │   ├── AuthenticationRequest.java
+                        │   └── AuthenticationResponse.java 
+                        ├── model
+                        │   ├── Diary.java
+                        │   └── User.java
+                        ├── prop
+                        │   └── jwtProp.java 
+                        ├── repository
+                        │   └── UserRepository.java
+                        └── service
+                            ├── JwtTokenProvider.java        
+                            └── UserService.java            
 
 ```
 
