@@ -5,35 +5,36 @@
 ## 파일 구조
 
 ```md
-- src
-  - main
-    - java/com/example/demo
-            - config
-              - WebConfig.java
-            - controller
-              - AuthController.java
-            - model
-              - Diary.java
-              - User.java
-            - repository
-              - DiaryRepository.java
-              - UserProjection.java
-              - UserRepository.java
-            - security
-              - AuthTokenFilter.java
-              - SecurityConfig.java
-            - service
-              - DiaryService.java
-              - UserService.java
-            - DemoApplication.java
-    - resources
-      - application.properties(.gitignore)
+src
+└── main
+    └── java
+        └── com/practice/diary
+            ├── config
+            │   └── SecurityConfig.java
+            ├── constants
+            │   └── SecurityConstants.java
+            ├── controller
+            │   └── AuthController.java
+            ├── domain
+            │   ├── AuthenticationRequest.java
+            │   └── AuthenticationResponse.java 
+            ├── model
+            │   ├── Diary.java
+            │   └── User.java
+            ├── prop
+            │   └── jwtProp.java 
+            ├── repository
+            │   └── UserRepository.java
+            └── service
+                ├── JwtTokenProvider.java        
+                └── UserService.java            
+
 ```
 
 ### config
 
-- WebConfig.java
-  - CORS 설정
+- SecurityConfig.java
+  - Spring Security 설정
 
 ### controller
 
@@ -53,21 +54,26 @@
 
 - DiaryRepository.java
   - 다이어리 CRUD
-- UserProjection.java
-  - 유저 모델의 일부만 반환
 - UserRepository.java
   - 유저 CRUD
 
-### security
-
-- AuthTokenFilter.java
-  - JWT 토큰 인증
-- SecurityConfig.java
-  - Spring Security 설정
-  
 ### service
 
 - DiaryService.java
   - 다이어리 서비스
 - UserService.java
   - 유저 서비스
+- JwtTokenProvider
+  - JWT 토큰 생성, 검증
+
+### domain
+
+- AuthenticationRequest.java
+  - 로그인 요청
+- AuthenticationResponse.java
+  - 로그인 응답
+
+### prop
+
+- jwtProp.java
+  - JWT 토큰 설정
