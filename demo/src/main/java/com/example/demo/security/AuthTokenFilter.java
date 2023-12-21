@@ -5,12 +5,12 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureException;
-import java.io.IOException;
-import java.util.Collections;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.Collections;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -26,6 +26,20 @@ public class AuthTokenFilter extends OncePerRequestFilter {
     this.jwtSecretKey = jwtSecretKey;
   }
 
+  // JWT 토큰 검증 및 사용자 ID 추출
+  private Long getUserIdFromToken(String token) {
+    try {
+      Claims claims = Jwts
+        .parser()
+        .setSigningKey(jwtSecretKey)
+        .parseClaimsJws(token)
+        .getBody();
+      return claims.get("userId", Long.class);
+    } catch (SignatureException e) {
+      throw new RuntimeException("토큰 검증 실패: " + e.getMessage());
+    }
+  }
+
   @Override
   protected void doFilterInternal(
     HttpServletRequest request,
@@ -33,31 +47,29 @@ public class AuthTokenFilter extends OncePerRequestFilter {
     FilterChain filterChain
   ) throws ServletException, IOException {
     try {
-      String header = request.getHeader("Authorization");
-      if (header != null && header.startsWith("Bearer ")) {
-        String token = header.substring(7);
-        Claims claims = Jwts
-          .parser()
-          .setSigningKey(jwtSecretKey)
-          .parseClaimsJws(token)
-          .getBody();
-        String username = claims.getSubject();
+      // 헤더에서 JWT 토큰 추출
+      String jwtToken = request.getHeader("Authorization");
+      if (jwtToken != null && jwtToken.startsWith("Bearer ")) {
+        jwtToken = jwtToken.substring(7);
+      }
 
-        // 사용자 인증 로직
-        // 예제에서는 단순화를 위해 사용자 정보 및 권한 정보를 직접 생성합니다.
-        UserDetails userDetails = new org.springframework.security.core.userdetails.User(
-          username,
-          "",
-          Collections.singletonList(new SimpleGrantedAuthority("USER"))
-        );
+      // JWT 토큰 검증 및 사용자 ID 추출
+      Long userId = getUserIdFromToken(jwtToken);
+
+      // JWT 토큰 검증을 통과한 경우
+      if (userId != null) {
+        // 인증 토큰 생성
         UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-          userDetails,
+          userId, // 인증 토큰에 담을 사용자 ID
           null,
-          userDetails.getAuthorities()
+          Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"))
         );
+        // 요청 정보 설정
         authentication.setDetails(
           new WebAuthenticationDetailsSource().buildDetails(request)
         );
+
+        // SecurityContext에 인증 토큰 저장
         SecurityContextHolder.getContext().setAuthentication(authentication);
       }
     } catch (ExpiredJwtException | SignatureException e) {

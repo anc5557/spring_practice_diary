@@ -53,19 +53,7 @@ public class UserService {
     return jwtToken;
   }
 
-  // JWT 토큰 검증 및 사용자 ID 추출
-  private Long getUserIdFromToken(String token) {
-    try {
-      Claims claims = Jwts
-        .parser()
-        .setSigningKey(secretKey)
-        .parseClaimsJws(token)
-        .getBody();
-      return claims.get("userId", Long.class);
-    } catch (SignatureException e) {
-      throw new RuntimeException("토큰 검증 실패: " + e.getMessage());
-    }
-  }
+
 
   // 사용자 등록(회원가입)
   public User registerUser(User user) {
