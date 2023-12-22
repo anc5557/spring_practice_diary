@@ -8,7 +8,7 @@
 src
 └── main
     └── java
-        └── com/practice/diary
+        └── com/practice/diary 
                         ├── config
                         │   └── SecurityConfig.java
                         ├── constants
