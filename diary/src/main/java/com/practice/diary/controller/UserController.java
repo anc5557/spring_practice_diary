@@ -11,12 +11,12 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")
-public class AuthController {
+public class UserController {
 
   private final UserService userService;
   private final JwtTokenProvider jwtTokenProvider;
 
-  public AuthController(
+  public UserController(
     UserService userService,
     JwtTokenProvider jwtTokenProvider
   ) {
@@ -57,5 +57,20 @@ public class AuthController {
     String username = jwtTokenProvider.getUsername(token);
     User user = userService.updateUserInfo(username, newUser);
     return ResponseEntity.ok(user);
+  }
+
+  @PostMapping("/delete")
+  public ResponseEntity<?> deleteUser(
+    @RequestHeader("Authorization") String header
+  ) {
+    String token = jwtTokenProvider.resolveToken(header);
+
+    if (!jwtTokenProvider.validateToken(token)) {
+      return ResponseEntity.badRequest().body("Invalid token");
+    }
+
+    String username = jwtTokenProvider.getUsername(token);
+    userService.deleteUser(username);
+    return ResponseEntity.ok("User deleted");
   }
 }
