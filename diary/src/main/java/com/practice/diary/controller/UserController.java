@@ -3,8 +3,8 @@ package com.practice.diary.controller;
 import com.practice.diary.domain.AuthenticationRequest;
 import com.practice.diary.domain.AuthenticationResponse;
 import com.practice.diary.model.User;
-import com.practice.diary.service.JwtTokenProvider;
 import com.practice.diary.service.UserService;
+import com.practice.diary.util.TokenUtils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.*;
@@ -14,14 +14,11 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
   private final UserService userService;
-  private final JwtTokenProvider jwtTokenProvider;
+  private final TokenUtils tokenUtils;
 
-  public UserController(
-    UserService userService,
-    JwtTokenProvider jwtTokenProvider
-  ) {
+  public UserController(UserService userService, TokenUtils tokenUtils) {
     this.userService = userService;
-    this.jwtTokenProvider = jwtTokenProvider;
+    this.tokenUtils = tokenUtils;
   }
 
   @PostMapping("/login")
@@ -48,13 +45,7 @@ public class UserController {
     @RequestBody User newUser,
     @RequestHeader("Authorization") String header
   ) {
-    String token = jwtTokenProvider.resolveToken(header);
-
-    if (!jwtTokenProvider.validateToken(token)) {
-      return ResponseEntity.badRequest().body("Invalid token");
-    }
-
-    String username = jwtTokenProvider.getUsername(token);
+    String username = tokenUtils.getUsernameFromToken(header);
     User user = userService.updateUserInfo(username, newUser);
     return ResponseEntity.ok(user);
   }
@@ -63,14 +54,17 @@ public class UserController {
   public ResponseEntity<?> deleteUser(
     @RequestHeader("Authorization") String header
   ) {
-    String token = jwtTokenProvider.resolveToken(header);
-
-    if (!jwtTokenProvider.validateToken(token)) {
-      return ResponseEntity.badRequest().body("Invalid token");
-    }
-
-    String username = jwtTokenProvider.getUsername(token);
+    String username = tokenUtils.getUsernameFromToken(header);
     userService.deleteUser(username);
     return ResponseEntity.ok("User deleted");
+  }
+
+  @GetMapping("/profile")
+  public ResponseEntity<?> getUserProfile(
+    @RequestHeader("Authorization") String header
+  ) {
+    String username = tokenUtils.getUsernameFromToken(header);
+    User user = userService.getUserProfile(username);
+    return ResponseEntity.ok(user);
   }
 }

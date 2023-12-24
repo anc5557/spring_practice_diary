@@ -62,7 +62,7 @@ public class UserService {
    * @param username
    * @return user
    */
-  public User getUserInfo(String username) {
+  public User getUserProfile(String username) {
     return userRepository.findByUsername(username);
   }
 

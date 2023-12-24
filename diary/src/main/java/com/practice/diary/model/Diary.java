@@ -17,6 +17,6 @@ public class Diary {
   private String title;
   private String content;
   private LocalDateTime date;
-  private String userId; // MongoDB에는 @ManyToOne 같은 관계 매핑 어노테이션이 없으므로, 직접 참조를 관리해야 함
+  private String username; // MongoDB에는 @ManyToOne 같은 관계 매핑 어노테이션이 없으므로, 직접 참조를 관리해야 함
   private String emotion;
 }
