@@ -15,6 +15,9 @@ src
                         │   └── SecurityConstants.java
                         ├── controller
                         │   └── AuthController.java
+                        │   └── DiaryController.java
+                        ├── dto
+                        │   └── DiaryDto.java
                         ├── domain
                         │   ├── AuthenticationRequest.java
                         │   └── AuthenticationResponse.java 
@@ -25,6 +28,7 @@ src
                         │   └── jwtProp.java 
                         ├── repository
                         │   └── UserRepository.java
+                        │   └── DiaryRepository.java
                         └── service
                             ├── JwtTokenProvider.java        
                             └── UserService.java            
@@ -38,42 +42,60 @@ src
 
 ### controller
 
-- AuthController.java
-  - 회원가입, 로그인, 로그아웃, 회원탈퇴
-- DiaryController.java
-  - 다이어리 작성, 수정, 삭제, 조회
+- 컨트롤러 : 클라이언트의 요청을 받아서 처리하는 부분
+  - AuthController.java
+    - 회원가입, 로그인, 로그아웃, 회원탈퇴
+  - DiaryController.java
+    - 다이어리 작성, 수정, 삭제, 조회
 
 ### model
 
-- Diary.java
-  - 다이어리 모델
-- User.java
-  - 유저 모델
+- 모델 : 데이터베이스의 테이블과 매핑되는 부분
+  - Diary.java
+    - 다이어리 모델
+  - User.java
+    - 유저 모델
 
 ### repository
 
-- DiaryRepository.java
-  - 다이어리 CRUD
-- UserRepository.java
-  - 유저 CRUD
+- Repository : 데이터베이스에 접근하는 부분
+  - DiaryRepository.java
+    - 다이어리 CRUD
+  - UserRepository.java
+    - 유저 CRUD
 
 ### service
 
-- DiaryService.java
-  - 다이어리 서비스
-- UserService.java
-  - 유저 서비스
-- JwtTokenProvider
-  - JWT 토큰 생성, 검증
+- Service : 비즈니스 로직을 처리하는 부분
+  - DiaryService.java
+    - 다이어리 서비스
+  - UserService.java
+    - 유저 서비스
+  - JwtTokenProvider
+    - JWT 토큰 생성, 검증
 
 ### domain
 
-- AuthenticationRequest.java
-  - 로그인 요청
-- AuthenticationResponse.java
-  - 로그인 응답
+- 도메인 : 로그인 요청, 응답
+  - AuthenticationRequest.java
+    - 로그인 요청
+  - AuthenticationResponse.java
+    - 로그인 응답
 
 ### prop
 
-- jwtProp.java
-  - JWT 토큰 설정
+- prop : 상수값
+  - jwtProp.java
+    - JWT 토큰 설정
+
+### util
+
+- util : 유틸리티
+  - TokenUtils.java
+    - 토큰 생성, 검증
+
+### dto
+
+- dto : 데이터 전송 객체
+  - DiaryDto.java
+    - 다이어리 데이터 전송 객체
